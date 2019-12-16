@@ -1,12 +1,15 @@
 const express = require("express")
 
 const server = express()
-
 server.use(express.json())
 
-server.use('/', (req, res) => {
-    res.send('This is only a test').end()
-})
+// import router
+const projectRouter = require('./routers/projectRouter.js')
+const actionRouter = require('./routers/actionRouter.js')
+
+// use router
+server.use('/api/projects', projectRouter)
+server.use('/api/actions', actionRouter)
 
 server.listen(4000, () => {
     console.log(`Server running on port 4000`)
