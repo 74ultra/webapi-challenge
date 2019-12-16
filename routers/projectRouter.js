@@ -78,7 +78,7 @@ router.post('/', validateProjectData(), (req, res) => {
         })
         .catch(err => {
             console.log(err)
-            res.status(500).json({ error: 'There was an error added the new project'})
+            res.status(500).json({ error: 'There was an error adding the new project'})
         })
 })
 
@@ -88,7 +88,12 @@ router.delete('/:id', validateProjectId(), (req, res) => {
     const { id } = req.params;
     Projects.remove(id)
         .then(deleted => {
-            res.status(204).end()
+            if(deleted){
+                return res.status(200).json({ message: `Project id ${id} has been deleted`})
+            } else {
+                return res.status(500).json({ error: `There was an error deleting the post`})
+            }
+            
         })
         .catch(err => {
             console.log(err)
@@ -96,6 +101,8 @@ router.delete('/:id', validateProjectId(), (req, res) => {
         })
 })
 
+
+// Update a project
 router.put('/:id', validateProjectId(), validateProjectData(), (req, res) => {
     const { id } = req.params;
     const { name, description } = req.body;
